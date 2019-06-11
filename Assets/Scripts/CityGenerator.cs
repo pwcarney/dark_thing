@@ -19,6 +19,7 @@ public class CityGenerator : MonoBehaviour
     float floor_offset = 4f;
     float floor_height = 8f;
     public GameObject floor_prefab;
+    int max_stories = 15;
 
     public NavMeshSurface nav_mesh;
     public List<Vector3> legal_random_locations = new List<Vector3>();
@@ -34,7 +35,7 @@ public class CityGenerator : MonoBehaviour
 
                 if (Random.Range(0, 100) < 50)
                 {
-                    int building_height = Random.Range(1, 10);
+                    int building_height = Random.Range(1, max_stories);
                     for (int k = 0; k < building_height; k++)
                     {
                         Instantiate(floor_prefab, location + new Vector3(0, k * floor_height + floor_offset, 0), Quaternion.identity);
@@ -44,8 +45,12 @@ public class CityGenerator : MonoBehaviour
                 {
                     placed_player = true;
                     player.transform.position = location;
+
+                    GameObject new_enemy = Instantiate(enemy, location + new Vector3(10, 0, 10), Quaternion.identity);
+                    new_enemy.GetComponent<Enemy>().RegisterLegalLocations(legal_random_locations);
+                    all_enemies.Add(new_enemy);
                 }
-                else if (Random.Range(0, 100) < 2)
+                else if (Random.Range(0, 100) < 10)
                 {
                     GameObject new_enemy = Instantiate(enemy, location, Quaternion.identity);
                     new_enemy.GetComponent<Enemy>().RegisterLegalLocations(legal_random_locations);
