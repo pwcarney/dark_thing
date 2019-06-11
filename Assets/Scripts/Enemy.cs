@@ -7,8 +7,10 @@ using UnityEngine.SceneManagement;
 public class Enemy : MonoBehaviour
 {
     GameObject player;
-    int player_seek_range = 1000;
+    int player_seek_range = 100;
     public LayerMask wall_mask;
+
+    MusicController music;
 
     bool activated = false;
     Vector3 current_destination;
@@ -21,6 +23,7 @@ public class Enemy : MonoBehaviour
     void Start()
     {
         player = GameObject.Find("Player");
+        music = FindObjectOfType<MusicController>();
     }
 
     public void RegisterLegalLocations(List<Vector3> legal_random_locations)
@@ -103,5 +106,7 @@ public class Enemy : MonoBehaviour
             GetComponent<AudioSource>().pitch = Random.Range(0.9f, 1.1f);
             GetComponent<AudioSource>().Play();
         }
+
+        music.Chasing();
     }
 }
